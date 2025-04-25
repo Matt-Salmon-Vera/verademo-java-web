@@ -174,13 +174,13 @@
 				<version>3.1.0</version>
 				<configuration>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
-					<webResources>
+					<resources>
 						<resource>
 							<directory>src/main/ebextensions</directory>
 							<targetPath>.ebextensions</targetPath>
 							<filtering>true</filtering>
 						</resource>
-					</webResources>
+					</resources>
 				</configuration>
 			</plugin>
 			<plugin>
