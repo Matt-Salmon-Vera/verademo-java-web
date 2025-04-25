@@ -12,7 +12,8 @@ public class Constants {
 	private final String JDBC_USER = "blab";
 	/* START BAD CODE */
 	private final String JDBC_PASSWORD = "z2^E6J4$;u;d";
-	/* END BAD CODE */
+	//private final String JDBC_PASSWORD = "z2^E6J4$o87yih";
+	 /* END BAD CODE */
 
 	private String hostname;
 	private String port;

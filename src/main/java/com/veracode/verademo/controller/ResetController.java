@@ -36,7 +36,7 @@ public class ResetController {
 	ServletContext context;
 
 	private static User[] users = new User[] {
-			User.create("admin", "admin", "Thats Mr Administrator to you."),
+			/*User.create("admin", "admin", "Thats Mr Administrator to you."),
 			User.create("john", "John", "John Smith"),
 			User.create("paul", "Paul", "Paul Farrington"),
 			User.create("chrisc", "Chris", "Chris Campbell"),
@@ -63,7 +63,7 @@ public class ResetController {
 			User.create("johnny", "Johnny", "Johnny Wong"),
 			User.create("kevin", "Kevin", "Kevin Rise"),
 			User.create("scottrum", "Scott Rumrill", "Scott Rumrill"),
-			User.create("scottsim", "Scott Simpson", "Scott Simpson") };
+			User.create("scottsim", "Scott Simpson", "Scott Simpson")*/ };
 
 	@RequestMapping(value = "/reset", method = RequestMethod.GET)
 	public String showReset()

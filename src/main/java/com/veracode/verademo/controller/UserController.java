@@ -125,6 +125,9 @@ public class UserController {
 	 * @param model
 	 * @return
 	 */
+
+	 // Password = "1234pass!"
+
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String processLogin(
 			@RequestParam(value = "user", required = true) String username,
@@ -452,7 +455,7 @@ public class UserController {
 		logger.info("Entering showProfile");
 
 		String username = (String) httpRequest.getSession().getAttribute("username");
-		// Ensure user is logged in
+		
 		if (username == null) {
 			logger.info("User is not Logged In - redirecting...");
 			return "redirect:login?target=profile";
