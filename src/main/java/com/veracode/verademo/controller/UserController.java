@@ -50,7 +50,7 @@ import com.veracode.verademo.model.Blabber;
 import com.veracode.verademo.utils.Constants;
 import com.veracode.verademo.utils.User;
 import com.veracode.verademo.utils.UserFactory;
-
+// a change
 /**
  * @author johnadmin
  */
@@ -125,6 +125,9 @@ public class UserController {
 	 * @param model
 	 * @return
 	 */
+
+	 // Password = "1234pass!"
+
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String processLogin(
 			@RequestParam(value = "user", required = true) String username,
@@ -148,22 +151,20 @@ public class UserController {
 		}
 
 		Connection connect = null;
-		Statement sqlStatement = null;
-
+		PreparedStatement sqlStatement = null;
 		try {
-			// Get the Database Connection
-			logger.info("Creating the Database connection");
-			Class.forName("com.mysql.jdbc.Driver");
-			connect = DriverManager.getConnection(Constants.create().getJdbcConnectionString());
-
-			/* START BAD CODE */
-			// Execute the query
-			logger.info("Creating the Statement");
-			String sqlQuery = "select username, password, password_hint, created_at, last_login, real_name, blab_name from users where username='"
-					+ username + "' and password='" + md5(password) + "';";
-			sqlStatement = connect.createStatement();
-			logger.info("Execute the Statement");
-			ResultSet result = sqlStatement.executeQuery(sqlQuery);
+		    // Get the Database Connection
+		    logger.info("Creating the Database connection");
+		    Class.forName("com.mysql.jdbc.Driver");
+		    connect = DriverManager.getConnection(Constants.create().getJdbcConnectionString());
+		    /* START BAD CODE */
+		    // Execute the query
+		    logger.info("Creating the Statement");
+		    String sqlQuery = "select username, password, password_hint, created_at, last_login, real_name, blab_name from users where username='?' and password='?';";
+		    sqlStatement = connect.prepareStatement(sqlQuery);
+		    sqlStatement.setString(1, username);
+		    sqlStatement.setString(2, md5(password));
+		    ResultSet result = sqlStatement.executeQuery();
 			/* END BAD CODE */
 
 			// Did we find exactly 1 user that matched?
@@ -235,20 +236,17 @@ public class UserController {
 	public String showPasswordHint(String username)
 	{
 		logger.info("Entering password-hint with username: " + username);
-
-		if (username == null || username.isEmpty()) {
-			return "No username provided, please type in your username first";
-		}
-
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-
-			Connection connect = DriverManager.getConnection(Constants.create().getJdbcConnectionString());
-
-			String sql = "SELECT password_hint FROM users WHERE username = '" + username + "'";
-			logger.info(sql);
-			Statement statement = connect.createStatement();
-			ResultSet result = statement.executeQuery(sql);
+		    if (username == null || username.isEmpty()) {
+		        return "No username provided, please type in your username first";
+		    }
+		    try {
+		        Class.forName("com.mysql.jdbc.Driver");
+		        Connection connect = DriverManager.getConnection(Constants.create().getJdbcConnectionString());
+		        String sql = "SELECT password_hint FROM users WHERE username =?";
+		        logger.info(sql);
+		        PreparedStatement statement = connect.prepareStatement(sql);
+		        statement.setString(1, username);
+		        ResultSet result = statement.executeQuery();
 			if (result.first()) {
 				String password= result.getString("password_hint");
 				String formatString = "Username '" + username + "' has password: %.2s%s";
@@ -452,7 +450,7 @@ public class UserController {
 		logger.info("Entering showProfile");
 
 		String username = (String) httpRequest.getSession().getAttribute("username");
-		// Ensure user is logged in
+		
 		if (username == null) {
 			logger.info("User is not Logged In - redirecting...");
 			return "redirect:login?target=profile";
